@@ -1,8 +1,13 @@
 // For Node.js environments
 require('dotenv').config()
-const apiKey = process.env.API_KEY
+const p_apiKey = process.env.P_API_KEY
 
 import { dates } from '/utils/dates'
+import OpenAI from 'openai'
+
+const openai = new OpenAI({
+  o_apiKey: process.env.O_API_KEY,
+})
 
 const tickersArr = []
 
@@ -47,7 +52,7 @@ async function fetchStockData() {
   try {
     const stockData = await Promise.all(
       tickersArr.map(async (ticker) => {
-        const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${dates.startDate}/${dates.endDate}?apiKey=${apiKey}`
+        const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${dates.startDate}/${dates.endDate}?apiKey=${p_apiKey}`
         const response = await fetch(url)
         const data = await response.text()
         const status = await response.status
@@ -79,4 +84,4 @@ function renderReport(output) {
   outputArea.style.display = 'flex'
 }
 
-console.log(apiKey)
+console.log(p_apiKey)
